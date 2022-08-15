@@ -1,30 +1,30 @@
 #!/bin/bash
 #
-# chkconfig: 345 99 28
+# chkconfig: 459 86 27
 # description: Starts/Stops Apache Tomcat
 #
 # Tomcat 7 start/stop/status script
-# Forked from: https://gist.github.com/valotas/1000094
-# @author: Miglen Evlogiev <bash@miglen.com>
+# Forked from https://github.com/Messites/AnsibleDeploy
+# @author: Emmanuel Naweji <revnaweji@gmail.com>
 #
 # Release updates:
 # Updated method for gathering pid of the current proccess
-# Added usage of CATALINA_BASE
+# Added usage of UBUNTU_BASE
 # Added coloring and additional status
 # Added check for existence of the tomcat user
 #
  
 #Location of JAVA_HOME (bin files)
-export JAVA_HOME=/usr/lib/jvm/jre
+export JAVA_HOME=/usr/lib/jvm
  
 #Add Java binary files to PATH
 export PATH=$JAVA_HOME/bin:$PATH
  
-#CATALINA_HOME is the location of the bin files of Tomcat  
-export CATALINA_HOME=/usr/share/tomcat  
+#UBUNTU_BASE is the location of the bin files of Tomcat  
+export UBUNTU_BASE=/usr/share/tomcat  
  
-#CATALINA_BASE is the location of the configuration files of this instance of Tomcat
-export CATALINA_BASE=/usr/share/tomcat
+#UBUNTU_BASE is the location of the configuration files of this instance of Tomcat
+export UBUNTU_BASE=/usr/share/tomcat
  
 #TOMCAT_USER is the default user of tomcat
 export TOMCAT_USER=tomcat
@@ -36,7 +36,7 @@ TOMCAT_USAGE="Usage: $0 {\e[00;32mstart\e[00m|\e[00;31mstop\e[00m|\e[00;32mstatu
 SHUTDOWN_WAIT=20
  
 tomcat_pid() {
-        echo `ps -fe | grep $CATALINA_BASE | grep -v grep | tr -s " "|cut -d" " -f2`
+        echo `ps -fe | grep $UBUNTU_BASE | grep -v grep | tr -s " "|cut -d" " -f2`
 }
  
 start() {
@@ -52,9 +52,9 @@ start() {
     #/bin/su -p -s /bin/sh tomcat
         if [ `user_exists $TOMCAT_USER` = "1" ]
         then
-                su $TOMCAT_USER -c $CATALINA_HOME/bin/startup.sh
+                su $TOMCAT_USER -c $UBUNTU_HOME/bin/startup.sh
         else
-                sh $CATALINA_HOME/bin/startup.sh
+                sh $UBUNTU_HOME/bin/startup.sh
         fi
         status
   fi
@@ -74,7 +74,7 @@ stop() {
   then
     echo -e "\e[00;31mStoping Tomcat\e[00m"
     #/bin/su -p -s /bin/sh tomcat
-        sh $CATALINA_HOME/bin/shutdown.sh
+        sh $UBUNUTU_HOME/bin/shutdown.sh
  
     let kwait=$SHUTDOWN_WAIT
     count=0;
